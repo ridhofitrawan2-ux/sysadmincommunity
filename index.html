@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SysAdmin Community - IT Network & System Administration</title>
+    <meta name="description" content="Komunitas profesional untuk SysAdmin, Network Engineer, dan IT Enthusiast. Belajar, berbagi, dan berkembang bersama.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           CSS VARIABLES & RESET
+           ========================================= */
+        :root {
+            /* Color Palette - Cyber/Dark Theme */
+            --bg-dark: #0a0e14;
+            --bg-card: #161b22;
+            --bg-card-hover: #1f2630;
+            --primary: #00ff9d; /* Neon Green */
+            --primary-dim: rgba(0, 255, 157, 0.1);
+            --secondary: #00d2ff; /* Cyan */
+            --accent: #7ee787;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --border-color: #30363d;
+            --code-bg: #0d1117;
+            
+            /* Typography */
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+            
+            /* Spacing */
+            --section-padding: 100px 0;
+            --container-width: 1200px;
+            
+            /* Transitions */
+            --transition-fast: 0.2s ease;
+            --transition-medium: 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-fast);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            margin-top: 15px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Utility Classes */
+        .text-primary { color: var(--primary); }
+        .text-secondary { color: var(--secondary); }
+        .font-mono { font-family: var(--font-mono); }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            font-family: var(--font-mono);
+            transition: var(--transition-medium);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-dim);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border-color: var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-main);
+            background-color: var(--bg-card);
+        }
+
+        /* =========================================
+           HEADER & NAVIGATION (Hamburger)
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(10, 14, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            height: 70px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        /* Hamburger Menu Icon */
+        .hamburger {
+            display: none; /* Hidden on desktop */
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-main);
+            border-radius: 2px;
+            transition: var(--transition-fast);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+            background-color: var(--primary);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+            background-color: var(--primary);
+        }
+
+        /* Desktop Nav Links */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition-fast);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background-color: var(--bg-dark);
+            transform: translateX(100%);
+            transition: var(--transition-medium);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            z-index: 999;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu a {
+            font-size: 1.2rem;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+        }
+
+        /* =========================================
+           HERO SECTION
+           ========================================= */
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 70px;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 255, 157, 0.05) 0%, rgba(10, 14, 20, 1) 70%);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-text .highlight {
+            color: var(--primary);
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .terminal-window {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            font-family: var(--font-mono);
+            position: relative;
+        }
+
+        .terminal-header {
+            background-color: #0d1117;
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot.red { background-color: #ff5f56; }
+        .dot.yellow { background-color: #ffbd2e; }
+        .dot.green { background-color: #27c93f; }
+
+        .terminal-body {
+            padding: 20px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            min-height: 300px;
+        }
+
+        .command-line {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .prompt {
+            color: var(--primary);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: var(--primary);
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* =========================================
+           ABOUT SECTION
+           ========================================= */
+        #about {
+            padding: var(--section-padding);
+            background-color: var(--bg-dark);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .about-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 8px;
+        }
+
+        .about-card h3 {
+            font-family: var(--font-mono);
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* =========================================
+           CURRICULUM / LEARNING PATH
+           ========================================= */
+        #curriculum {
+            padding: var(--section-padding);
+            background-color: #0d1117;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .roadmap-container {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        /* Vertical Line */
+        .roadmap-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+            transform: translateX(-50%);
+        }
+
+        .roadmap-item {
+            margin-bottom: 60px;
+            position: relative;
+            width: 50%;
+            padding: 0 40px;
+        }
+
+        .roadmap-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .roadmap-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+        }
+
+        /* Dots */
+        .roadmap-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-dark);
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            top: 0;
+            z-index: 2;
+        }
+
+        .roadmap-item:nth-child(odd)::after {
+            right: -10px;
+        }
+
+        .roadmap-item:nth-child(even)::after {
+            left: -10px;
+        }
+
+        .roadmap-content {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-medium);
+        }
+
+        .roadmap-content:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .roadmap-content h3 {
+            color: var(--primary);
+            font-family: var(--font-mono);
+        }
+
+        .topic-list {
+            margin-top: 15px;
+            text-align: left; /* Always align list text left for readability */
+        }
+
+        .topic-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .topic-list li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-family: var(--font-mono);
+        }
+
+        /* =========================================
+           SKILLS & TOOLS GRID
+           ========================================= */
+        #tools {
+            padding: var(--section-padding);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 6px;
+            text-align: center;
+            transition: var(--transition-medium);
+        }
+
+        .tool-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--secondary);
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .tool-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .tool-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* =========================================
+           EVENTS & NEWS
+           ========================================= */
+        #events {
+            padding: var(--section-padding);
+            background-color: #0d1117;
+        }
+
+        .events-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .event-card {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: grayscale(40%);
+            transition: var(--transition-medium);
+        }
+
+        .event-card:hover .event-image {
+            filter: grayscale(0%);
+        }
+
+        .event-details {
+            padding: 25px;
+        }
+
+        .event-date {
+            font-family: var(--font-mono);
+            color: var(--secondary);
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .event-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .event-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* =========================================
+           CONTACT SECTION
+           ========================================= */
+        #contact {
+            padding: var(--section-padding);
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 50px;
+        }
+
+        .contact-info-box {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-item {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .info-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 4px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-fast);
+        }
+
+        .social-btn:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border-color: var(--primary);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-family: var(--font-main);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer {
+            background-color: #05080a;
+            padding: 80px 0 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-logo span { color: var(--primary); }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            color: var(--text-main);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
+        }
+
+        /* =========================================
+           RESPONSIVE DESIGN
+           ========================================= */
+        @media (max-width: 992px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-text p {
+                margin: 0 auto 30px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .roadmap-container::before {
+                left: 20px;
+            }
+
+            .roadmap-item {
+                width: 100%;
+                padding-left: 50px;
+                padding-right: 0;
+            }
+
+            .roadmap-item:nth-child(even) {
+                left: 0;
+                text-align: left;
+            }
+
+            .roadmap-item:nth-child(odd) {
+                text-align: left;
+            }
+
+            .roadmap-item::after {
+                left: 10px !important;
+            }
+
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span>&lt;</span>SysAdmin<span>/&gt;</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#about">Tentang Kami</a></li>
+                    <li><a href="#curriculum">Roadmap</a></li>
+                    <li><a href="#tools">Skill & Tools</a></li>
+                    <li><a href="#events">Agenda</a></li>
+                    <li><a href="#contact">Kontak</a></li>
+                </ul>
+            </nav>
+
+            <!-- Hamburger Icon (Mobile) -->
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#hero" onclick="toggleMenu()">01. Home</a>
+        <a href="#about" onclick="toggleMenu()">02. Tentang Kami</a>
+        <a href="#curriculum" onclick="toggleMenu()">03. Roadmap Belajar</a>
+        <a href="#tools" onclick="toggleMenu()">04. Tools</a>
+        <a href="#events" onclick="toggleMenu()">05. Agenda</a>
+        <a href="#contact" onclick="toggleMenu()">06. Kontak</a>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <span class="font-mono text-primary">#InitializeCommunity</span>
+                        <h1>Menguasai Infrastructure,<br> <span class="highlight">One Command at a Time.</span></h1>
+                        <p>Bergabunglah dengan SysAdmin Community. Tempat berkumpulnya para IT Engineer, Network Administrator, dan System Enthusiast untuk berbagi ilmu, troubleshooting, dan membangun jaringan masa depan.</p>
+                        <div class="hero-btns">
+                            <a href="#about" class="btn btn-primary">Mulai Belajar</a>
+                            <a href="#contact" class="btn btn-secondary">Gabung Grup</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Terminal Simulation -->
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="dot red"></div>
+                            <div class="dot yellow"></div>
+                            <div class="dot green"></div>
+                            <span style="font-size: 12px; color: #666; margin-left: 10px;">admin@sysadmin:~/community</span>
+                        </div>
+                        <div class="terminal-body">
+                            <div id="typewriter">
+                                <!-- JS will populate this -->
+                            </div>
+                            <span class="cursor"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="font-mono">&lt;About_Us /&gt;</h2>
+                    <p>Siapa kami dan mengapa komunitas ini didirikan untuk para IT Practitioner.</p>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h3 class="text-secondary">Misi Kami</h3>
+                        <p style="margin-bottom: 20px;">
+                            SysAdmin Community berdiri atas dasar kesederhanaan: <strong>"Knowledge is meant to be shared."</strong> Di dunia IT yang sangat luas, baik itu Networking, Linux Administration, Cloud Computing, hingga Cyber Security, tidak ada seorang pun yang tahu segalanya.
+                        </p>
+                        <p style="margin-bottom: 20px;">
+                            Komunitas ini hadir sebagai jembatan antara pemula yang baru mengenal perintah <code>ping</code> hingga senior engineer yang mengelola ribuan server. Kami fokus pada praktik nyata, studi kasus, dan solusi hands-on.
+                        </p>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number">500+</span>
+                                <span class="stat-label">Anggota Aktif</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">120+</span>
+                                <span class="stat-label">Modul Lab</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">50+</span>
+                                <span class="stat-label">Event Workshop</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">24/7</span>
+                                <span class="stat-label">Dukungan Komunitas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="about-card">
+                        <h3>Visi Komunitas</h3>
+                        <p style="color: var(--text-muted);">
+                            Menjadi ekosistem IT terbesar dan paling berkontribusi dalam mencetak talenta digital yang kompeten di bidang Network & System Administration, serta memajukan teknologi infrastruktur di Indonesia.
+                        </p>
+                        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
+                        <h3>Core Values</h3>
+                        <ul class="topic-list">
+                            <li><strong>Collaboration:</strong> Saling membantu dalam troubleshooting.</li>
+                            <li><strong>Integrity:</strong> Etika profesional dalam mengelola sistem.</li>
+                            <li><strong>Innovation:</strong> Terbuka terhadap teknologi baru (DevOps, Cloud, AI).</li>
+                            <li><strong>Open Source:</strong> Mendukung penggunaan perangkat lunak bebas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Curriculum / Roadmap Section -->
+        <section id="curriculum">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="font-mono">&lt;Learning_Path /&gt;</h2>
+                    <p>Peta jembatan pengetahuan dari nol hingga menjadi ahli.</p>
+                </div>
+
+                <div class="roadmap-container">
+                    <!-- Level 1 -->
+                    <div class="roadmap-item">
+                        <div class="roadmap-content">
+                            <h3>Level 1: Foundation</h3>
+                            <p>Pengenalan dasar komputer, jaringan, dan sistem operasi.</p>
+                            <ul class="topic-list">
+                                <li>Basic PC Hardware & Architecture</li>
+                                <li>OS Installation (Windows & Linux Desktop)</li>
+                                <li>Networking Fundamental (OSI Layer, TCP/IP)</li>
+                                <li>Subnetting & IP Addressing</li>
+                                <li>Command Line Interface (CLI) Basics</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Level 2 -->
+                    <div class="roadmap-item">
+                        <div class="roadmap-content">
+                            <h3>Level 2: System Administration</h3>
+                            <p>Pengelolaan server berbasis Linux dan Windows.</p>
+                            <ul class="topic-list">
+                                <li>Linux Administration (RHEL/Ubuntu/Debian)</li>
+                                <li>User Management & Permissions</li>
+                                <li>File System Management (EXT4, XFS, NTFS)</li>
+                                <li>Process & Service Management (Systemd)</li>
+                                <li>Basic Shell Scripting (Bash)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Level 3 -->
+                    <div class="roadmap-item">
+                        <div class="roadmap-content">
+                            <h3>Level 3: Network Engineering</h3>
+                            <p>Konfigurasi perangkat jaringan dan keamanan dasar.</p>
+                            <ul class="topic-list">
+                                <li>Router & Switch Configuration (Cisco/Mikrotik)</li>
+                                <li>VLAN, Trunking, & Inter-VLAN Routing</li>
+                                <li>Static & Dynamic Routing (OSPF, BGP)</li>
+                                <li>Firewall & Access Control Lists (ACL)</li>
+                                <li>VPN & Remote Access</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Level 4 -->
+                    <div class="roadmap-item">
+                        <div class="roadmap-content">
+                            <h3>Level 4: Services & Infrastructure</h3>
+                            <p>Men-deploy layanan yang digunakan user secara nyata.</p>
+                            <ul class="topic-list">
+                                <li>Web Server (Apache, Nginx)</li>
+                                <li>Database Server (MySQL, PostgreSQL)</li>
+                                <li>DNS Server (Bind9)</li>
+                                <li>DHCP Server</li>
+                                <li>Mail Server (Postfix, Dovecot)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Level 5 -->
+                    <div class="roadmap-item">
+                        <div class="roadmap-content">
+                            <h3>Level 5: Advanced & Cloud</h3>
+                            <p>Teknologi modern, otomatisasi, dan skala besar.</p>
+                            <ul class="topic-list">
+                                <li>Virtualization (VMware, KVM, Proxmox)</li>
+                                <li>Containerization (Docker, Kubernetes)</li>
+                                <li>Cloud Computing (AWS, GCP, Azure)</li>
+                                <li>Infrastructure as Code (Terraform, Ansible)</li>
+                                <li>Monitoring & Logging (Prometheus, Grafana, ELK)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 50px;">
+                    <a href="#" class="btn btn-secondary">Download Lengkap Kurikulum (.pdf)</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools Section -->
+        <section id="tools">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="font-mono">&lt;Tech_Stack /&gt;</h2>
+                    <p>Tools dan teknologi yang kami pelajari dan gunakan dalam daily job.</p>
+                </div>
+
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <span class="tool-icon">🐧</span>
+                        <h4>Linux OS</h4>
+                        <p>Debian, Ubuntu, CentOS, Rocky Linux</p>
+                    </div>
+                    <div class="tool-card">
+                        <span class="tool-icon">🖧</span>
+                        <h4>Networking</h4>
+                        <p>Cisco IOS, Mikrotik RouterOS, Juniper</p>
+                    </div>
+                    <div class="tool-card">
+                        <span class="tool-icon">🛡️</span>
+                        <h4>Security</h4>
+                        <p>Wireshark, Nmap, Fail2ban, SELinux</p>
+                    </div>
+                    <div class="tool-card">
+                        <span class="tool-icon">☁️</span>
+                        <h4>Cloud</h4>
+                        <p>AWS EC2, S3, VPC; Google Compute Engine</p>
+                    </div>
+                    <div class="tool-card">
+                        <span class="tool-icon">🐳</span>
+                        <h4>Container</h4>
+                        <p>Docker, Kubernetes (K8s), Podman</p>
+                    </div>
+                    <div class="tool-card">
+                        <span class="tool-icon">📜</span>
+                        <h4>Scripting</h4>
+                        <p>Bash, Python, PowerShell, Ansible</p>
+                    </div>
+                    <div class="tool-card">
+                        <span class="tool-icon">📊</span>
+                        <h4>Monitoring</h4>
+                        <p>Zabbix, Nagios, Prometheus, Grafana</p>
+                    </div>
+                    <div class="tool-card">
+                        <span class="tool-icon">🗄️</span>
+                        <h4>Databases</h4>
+                        <p>MySQL, PostgreSQL, MongoDB, Redis</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="font-mono">&lt;Upcoming_Events /&gt;</h2>
+                    <p>Kegiatan rutin, workshop, dan koding bareng.</p>
+                </div>
+
+                <div class="events-wrapper">
+                    <!-- Event 1 -->
+                    <div class="event-card">
+                        <img src="https://picsum.photos/seed/network/600/400" alt="Workshop Network" class="event-image">
+                        <div class="event-details">
+                            <span class="event-date">25 OKTOBER 2023 • 19:00 WIB</span>
+                            <h3 class="event-title">Workshop: Mikrotik Basic Configuration</h3>
+                            <p class="event-desc">Belajar dasar konfigurasi router Mikrotik untuk kebutuhan warnet dan kantor kecil. Praktek langsung via GNS3.</p>
+                            <a href="#" class="btn btn-secondary" style="width: 100%; text-align: center;">Daftar Sekarang</a>
+                        </div>
+                    </div>
+
+                    <!-- Event 2 -->
+                    <div class="event-card">
+                        <img src="https://picsum.photos/seed/linux/600/400" alt="Linux Install Fest" class="event-image">
+                        <div class="event-details">
+                            <span class="event-date">10 NOVEMBER 2023 • 09:00 WIB</span>
+                            <h3 class="event-title">Linux Install Fest & Sysadmin Talk</h3>
+                            <p class="event-desc">Bawa laptopmu dan kita install distro Linux favorit bersama. Dilanjutkan sesi tanya jawab karir SysAdmin.</p>
+                            <a href="#" class="btn btn-secondary" style="width: 100%; text-align: center;">Daftar Sekarang</a>
+                        </div>
+                    </div>
+
+                    <!-- Event 3 -->
+                    <div class="event-card">
+                        <img src="https://picsum.photos/seed/cloud/600/400" alt="Cloud Study" class="event-image">
+                        <div class="event-details">
+                            <span class="event-date">MINGGUAN • SETIAP KAMIS</span>
+                            <h3 class="event-title">Weekly Code: Python for Automation</h3>
+                            <p class="event-desc">Sesi belajar rutin otomatisasi task menggunakan Python. Terbuka untuk pemula yang sudah mengenal dasar syntax.</p>
+                            <a href="#" class="btn btn-secondary" style="width: 100%; text-align: center;">Gabung Discord</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action / Join -->
+        <section style="background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://picsum.photos/seed/serverroom/1200/600'); background-size: cover; background-attachment: fixed; padding: 100px 0; text-align: center;">
+            <div class="container">
+                <h2 style="font-size: 2.5rem; margin-bottom: 20px; color: #fff;">Siap Mengupgrade Skill IT Kamu?</h2>
+                <p style="font-size: 1.2rem; color: #ddd; margin-bottom: 30px;">Jangan belajar sendirian. Bergabunglah dengan ratusan anggota lainnya.</p>
+                <a href="#contact" class="btn btn-primary">Gabung Komunitas Sekarang</a>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <div class="container">
+                <div class="section-title">
+                    <h2 class="font-mono">&lt;Contact_Us /&gt;</h2>
+                    <p>Punya pertanyaan atau ingin berkolaborasi? Hubungi kami.</p>
+                </div>
+
+                <div class="contact-layout">
+                    <div class="contact-info">
+                        <div class="contact-info-box">
+                            <h3 style="margin-bottom: 25px;">Informasi Kontak</h3>
+                            
+                            <div class="info-item">
+                                <div class="info-icon">📍</div>
+                                <div>
+                                    <h4>Basecamp / Secret Lab</h4>
+                                    <p class="text-muted">Jl. Teknologi No. 127, Jakarta Selatan<br>Indonesia, 12345</p>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-icon">📧</div>
+                                <div>
+                                    <h4>Email Admin</h4>
+                                    <p class="text-muted">admin@sysadmin.community<br>helpdesk@sysadmin.community</p>
+                                </div>
+                            </div>
+
+                            <div class="info-item">
+                                <div class="info-icon">📱</div>
+                                <div>
+                                    <h4>WhatsApp / Signal</h4>
+                                    <p class="text-muted">+62 812-3456-7890</p>
+                                </div>
+                            </div>
+
+                            <div class="social-links">
+                                <a href="#" class="social-btn" title="GitHub"><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+                                <a href="#" class="social-btn" title="Discord"><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 2.039 2.039 0 0 0-.417-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.037.021.07.053.086 1.345.633 2.65.993 3.93 1.124a.05.05 0 0 0 .056-.019c.303-.392.573-.805.807-1.241a.05.05 0 0 0-.028-.07 5.691 5.691 0 0 1-1.243-.588.05.05 0 0 1 .024-.092c.084-.062.168-.127.248-.193a.05.05 0 0 1 .052-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007c.08.065.164.13.248.192a.05.05 0 0 1 .023.092 5.718 5.718 0 0 1-1.244.588.05.05 0 0 0-.028.07c.237.436.507.849.807 1.241a.05.05 0 0 0 .056.019c1.283-.131 2.587-.49 3.933-1.124a.05.05 0 0 0 .052-.086c.279-2.985-.28-5.995-1.878-9.107a.042.042 0 0 0-.021-.018Zm-7.49 7.068c-.781 0-1.423-.718-1.423-1.6 0-.882.642-1.6 1.423-1.6.782 0 1.424.718 1.424 1.6 0 .882-.642 1.6-1.424 1.6Zm5.03 0c-.781 0-1.423-.718-1.423-1.6 0-.882.642-1.6 1.423-1.6.782 0 1.424.718 1.424 1.6 0 .882-.642 1.6-1.424 1.6Z"/></svg></a>
+                                <a href="#" class="social-btn" title="LinkedIn"><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+                                <a href="#" class="social-btn" title="Instagram"><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.281.11-.705.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.276-1.485-.038-.843-.047-1.096-.047-3.232 0-2.136.009-2.388.047-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-wrapper">
+                        <form class="contact-form" onsubmit="event.preventDefault(); alert('Pesan telah terkirim ke server log! (Simulasi)');">
+                            <div class="form-group">
+                                <label for="name" style="margin-bottom: 8px; display: block; color: var(--text-muted);">Nama Lengkap</label>
+                                <input type="text" id="name" placeholder="Masukkan nama anda..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" style="margin-bottom: 8px; display: block; color: var(--text-muted);">Email Address</label>
+                                <input type="email" id="email" placeholder="contoh@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject" style="margin-bottom: 8px; display: block; color: var(--text-muted);">Subject</label>
+                                <input type="text" id="subject" placeholder="Pertanyaan / Kolaborasi / Join">
+                            </div>
+                            <div class="form-group">
+                                <label for="message" style="margin-bottom: 8px; display: block; color: var(--text-muted);">Message</label>
+                                <textarea id="message" rows="5" placeholder="Tuliskan pesan anda di sini..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Kirim Pesan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="footer-logo"><span>&lt;</span>SysAdmin<span>/&gt;</span></a>
+                    <p class="footer-text">
+                        Komunitas profesional untuk System Administrator dan Network Engineer. Kami membangun infrastruktur internet yang lebih baik, satu server pada satu waktu.
+                    </p>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#curriculum">Learning Path</a></li>
+                        <li><a href="#events">Events</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Wiki Komunitas</a></li>
+                        <li><a href="#">Forum Diskusi</a></li>
+                        <li><a href="#">Blog Tutorial</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Code of Conduct</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>&copy; 2023 SysAdmin Community. All Rights Reserved. Built with <span style="color: #e25555;">&hearts;</span> and Caffeine.</p>
+                <p style="margin-top: 5px; font-size: 0.75rem; color: #555;">System Status: <span style="color: var(--primary);">All Systems Operational</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Scripts -->
+    <script>
+        // 1. Mobile Menu Toggle Logic
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        function toggleMenu() {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+        }
+
+        // 2. Terminal Typewriter Effect
+        const typeWriterElement = document.getElementById('typewriter');
+        const lines = [
+            { text: "user@sysadmin:~$ init community", color: "#c9d1d9" },
+            { text: "> Loading modules... [OK]", color: "#00ff9d" },
+            { text: "> Connecting to network... [OK]", color: "#00ff9d" },
+            { text: "> Retrieving members... 500+ found.", color: "#00d2ff" },
+            { text: "user@sysadmin:~$ ./start-learning.sh", color: "#c9d1d9" },
+            { text: "Welcome to SysAdmin Community!", color: "#ffbd2e" }
+        ];
+
+        let lineIndex = 0;
+        let charIndex = 0;
+        let currentText = '';
+        let isDeleting = false;
+
+        function typeWriter() {
+            if (lineIndex < lines.length) {
+                const fullLine = lines[lineIndex];
+                const color = fullLine.color;
+                
+                // If this is a new line, create a div for it
+                if (charIndex === 0) {
+                    const lineDiv = document.createElement('div');
+                    lineDiv.style.color = color;
+                    lineDiv.id = `line-${lineIndex}`;
+                    typeWriterElement.appendChild(lineDiv);
+                }
+
+                const currentLineDiv = document.getElementById(`line-${lineIndex}`);
+                
+                if (!isDeleting) {
+                    currentText = fullLine.text.substring(0, charIndex + 1);
+                    charIndex++;
+                } 
+
+                currentLineDiv.textContent = currentText;
+
+                let typeSpeed = Math.random() * 50 + 30; // Random typing speed
+
+                if (!isDeleting && currentText === fullLine.text) {
+                    isDeleting = false; // Stop deleting, move to next
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeWriter, 500); // Pause before next line
+                    return;
+                }
+
+                setTimeout(typeWriter, typeSpeed);
+            }
+        }
+
+        // Start typing effect when page loads
+        document.addEventListener('DOMContentLoaded', typeWriter);
+
+        // 3. Smooth Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply animation to sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.6s ease-out';
+            observer.observe(section);
+        });
+
+    </script>
+</body>
+</html>
